@@ -1,0 +1,42 @@
+{
+  "name": "arduino-sunrise",
+  "version": "0.0.0",
+  "description": "See the sun rise and set!",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test",
+    "start": "grunt www"
+  },
+  "author": "pim <pvdheijden@yahoo.com",
+  "license": "MIT",
+  "config": {
+    "SERIAL_PORT": "/dev/cu.usbmodem621"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "*",
+    "grunt-coveralls": "*",
+    "grunt-mocha-istanbul": "*",
+    "istanbul": "*",
+    "jshint": "*",
+    "jshint-stylish": "*",
+    "mocha": "*"
+  },
+  "dependencies": {
+    "body-parser": "*",
+    "chai": "*",
+    "debug": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "grunt": "*",
+    "grunt-bower-task": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-env": "*",
+    "grunt-execute": "*",
+    "grunt-react": "*",
+    "morgan": "*",
+    "serialport": "^1.6.3",
+    "serve-favicon": "*"
+  }
+}

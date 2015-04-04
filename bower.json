@@ -1,0 +1,22 @@
+{
+  "name": "arduino-sunrise",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "pim <pvdheijden@yahoo.com>"
+  ],
+  "description": "See the sun rise and set!",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "*",
+    "bootstrap": "*",
+    "p5": "https://github.com/processing/p5.js/archive/0.4.3.tar.gz"
+  }
+}
