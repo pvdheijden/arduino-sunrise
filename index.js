@@ -29,13 +29,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(express.static(path.join(__dirname, 'www')));
 
+var arduinoPort = require('./lib/arduino-port');
+
 app.get('/', function(req, res) {
     res.render('index', {
         publish_key   : process.env.PN_PUBLISH_KEY,
-        subscribe_key : process.env.PN_SUBSCRIBE_KEY
+        subscribe_key : process.env.PN_SUBSCRIBE_KEY,
+        init: {
+            lightVal: arduinoPort.values[0]
+        }
     });
 });
-
-var arduinoPort = require('./lib/arduino-port');
 
 module.exports = app;

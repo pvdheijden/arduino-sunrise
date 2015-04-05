@@ -17,7 +17,7 @@
     window.onload = function() {
 
         var sun;
-        var lightVal = 0;
+        var lightVal = <%= init.lightVal %>;
 
         var pubnub = PUBNUB.init({
             'publish_key'   : '<%= publish_key %>',
