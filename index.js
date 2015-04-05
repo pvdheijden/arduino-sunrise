@@ -30,35 +30,12 @@ app.use(validator());
 app.use(express.static(path.join(__dirname, 'www')));
 
 app.get('/', function(req, res) {
-    res.render('index', {});
+    res.render('index', {
+        publish_key   : process.env.PN_PUBLISH_KEY,
+        subscribe_key : process.env.PN_SUBSCRIBE_KEY
+    });
 });
 
-var serialport = require('serialport');
-var SerialPort = serialport.SerialPort;
-
-var arduinoPort = new SerialPort('/dev/cu.usbmodem621', {
-    'baudrate': 115200,
-    'parser': serialport.parsers.readline('\r\n')
-});
-
-arduinoPort.on('open', function(err) {
-    if (err) {
-        debug('serial port open error "%s"', err.message);
-    }
-
-    arduinoPort.on('data', function(data) {
-        debug('serial port data "%s"', data.toString('ascii'));
-    });
-
-    arduinoPort.on('close', function() {
-        debug('serial port closed');
-    });
-
-    arduinoPort.on('error', function(err) {
-        debug('serial port error "%s"', err.message);
-    });
-
-});
-
+var arduinoPort = require('./lib/arduino-port');
 
 module.exports = app;

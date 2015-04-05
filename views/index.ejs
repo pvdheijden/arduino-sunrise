@@ -1,31 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8" />
     <title>Arduino Sunrise</title>
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <script src="/lib/p5/p5.min.js"></script>
-    <script src="/sketch.js"></script>
-
-    <!--
-    <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
-    </style>
-    -->
-
+    <script src="/lib/phaser/phaser.js"></script>
+    <script src="/lib/pubnub/pubnub.min.js"></script>
 </head>
 <body>
 
-<h1>Arduino Sunrise</h1>
+<script type="text/javascript">
 
-<div id='p5-canvas'></div>
+    window.onload = function() {
+
+        var sun;
+        var lightVal = 0;
+
+        var pubnub = PUBNUB.init({
+            'publish_key'   : '<%= publish_key %>',
+            'subscribe_key' : '<%= subscribe_key %>'
+        });
+
+        pubnub.subscribe({
+            channel: 'sun',
+            message: function(msg) {
+                lightVal = parseInt(msg);
+                console.log('lightVal', lightVal);
+                console.log('height', (-(game.world.height - 64) / 1023) * lightVal + (game.world.height - 64));
+            }
+        });
+
+        var preload = function () {
+
+            game.load.image('sky', 'assets/sky.png');
+            game.load.image('ground', 'assets/ground.png');
+
+            game.load.image('sun', 'assets/sun.png');
+        };
+
+        var create = function () {
+
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+
+            game.add.sprite(0, 0, 'sky');
+
+            sun = game.add.sprite(game.world.centerX, game.world.height - 64, 'sun');
+            sun.anchor.setTo(0.5, 0.5);
+
+            //  The platforms group contains the ground and the 2 ledges we can jump on
+            platforms = game.add.group();
+            platforms.enableBody = true;
+
+            // Here we create the ground.
+            var ground = platforms.create(0, game.world.height - 64, 'ground');
+            ground.scale.setTo(2, 2);
+            ground.body.immovable = true;
+
+        };
+
+        var update = function() {
+            sun.y = (-(game.world.height - 64) / 1023) * lightVal + (game.world.height - 64);
+        };
+
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-canvas', {
+            preload: preload,
+            create: create,
+            update: update
+        });
+
+    };
+
+</script>
+
+<div id="phaser-canvas"></div>
 
 </body>
 </html>
-

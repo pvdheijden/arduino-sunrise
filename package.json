@@ -29,6 +29,7 @@
     "express": "*",
     "express-session": "*",
     "express-validator": "*",
+    "serve-favicon": "*",
     "grunt": "*",
     "grunt-bower-task": "*",
     "grunt-contrib-copy": "*",
@@ -36,7 +37,7 @@
     "grunt-execute": "*",
     "grunt-react": "*",
     "morgan": "*",
-    "serialport": "^1.6.3",
-    "serve-favicon": "*"
+    "serialport": "*",
+    "pubnub": "*"
   }
 }
