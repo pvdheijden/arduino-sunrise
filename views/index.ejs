@@ -17,7 +17,10 @@
     window.onload = function() {
 
         var sun;
+        var tempText;
+
         var lightVal = <%= init.lightVal %>;
+        var tempVal = <%= init.tempVal %>;
 
         var pubnub = PUBNUB.init({
             'publish_key'   : '<%= publish_key %>',
@@ -25,11 +28,17 @@
         });
 
         pubnub.subscribe({
-            channel: 'sun',
-            message: function(msg) {
-                lightVal = parseInt(msg);
+            channel: 'measurement',
+            message: function(values) {
+                console.log('measurement values', values);
+
+                if (values[0]) { lightVal = values[0]; }
                 console.log('lightVal', lightVal);
-                console.log('height', (-(game.world.height - 64) / 1023) * lightVal + (game.world.height - 64));
+                console.log('sun.y', (-(game.world.height - 64) / 1023) * lightVal + (game.world.height - 64));
+
+                if (values[1]) { tempVal = values[1]; }
+                console.log('tempVal', tempVal);
+
             }
         });
 
@@ -50,6 +59,13 @@
             sun = game.add.sprite(game.world.centerX, game.world.height - 64, 'sun');
             sun.anchor.setTo(0.5, 0.5);
 
+            tempText = game.add.text(game.world.centerX, game.world.height - 64, '...', {
+                size: '20px',
+                fill: '#FFF',
+                align: 'center'
+            });
+            tempText.anchor.setTo(0.5, 0.5);
+
             //  The platforms group contains the ground and the 2 ledges we can jump on
             platforms = game.add.group();
             platforms.enableBody = true;
@@ -62,7 +78,12 @@
         };
 
         var update = function() {
-            sun.y = (-(game.world.height - 64) / 1023) * lightVal + (game.world.height - 64);
+            var y = (-(game.world.height - 64) / 1023) * lightVal + (game.world.height - 64);
+
+            sun.y = y;
+
+            tempText.setText(tempVal.toFixed(1));
+            tempText.y = y;
         };
 
         var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-canvas', {
