@@ -37,7 +37,7 @@ app.get('/', function(req, res) {
         subscribe_key : process.env.PN_SUBSCRIBE_KEY,
         init: {
             lightVal: arduinoPort.values[0] || 0,
-            tempVal: arduinoPort.values[1] || 0
+            tempVal: arduinoPort.values[5] || 0
         }
     });
 });

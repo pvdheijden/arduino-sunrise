@@ -1,11 +1,11 @@
 const int led = 13;
 static boolean ledState = LOW;
 
-#define SENSOR_COUNT    2
+#define SENSOR_COUNT    6
 #define LIGHT_SENSOR    0
-#define TEMP_SENSOR     1
+#define TEMP_SENSOR     5
 
-int val[SENSOR_COUNT] = { 0, 0 };
+int val[SENSOR_COUNT] = { 0, 0, 0, 0, 0, 0 };
 
 void measurement(int sensor, int threshold)
 {
@@ -37,5 +37,5 @@ void loop()
 
     ledState = !ledState;
 	digitalWrite(led, ledState);
-	delay(100);
+	delay(1000);
 }

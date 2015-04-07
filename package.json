@@ -1,17 +1,15 @@
 {
   "name": "arduino-sunrise",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "See the sun rise and set!",
   "main": "index.js",
   "scripts": {
     "test": "grunt test",
+    "setup": "grunt setup",
     "start": "grunt www"
   },
   "author": "pim <pvdheijden@yahoo.com",
   "license": "MIT",
-  "config": {
-    "SERIAL_PORT": "/dev/cu.usbmodem621"
-  },
   "devDependencies": {
     "grunt-contrib-jshint": "*",
     "grunt-coveralls": "*",
