@@ -11,11 +11,11 @@
 
 int main(int argc, char* argv[]) {
 
-    char* PN_PUBLISH_KEY = getenv("PN_PUBLISH_KEY");
-    char* PN_SUBSCRIBE_KEY = getenv("PN_SUBSCRIBE_KEY");
-    char* CHANNEL = getenv("CHANNEL");
+    char* publish_key = getenv("PN_PUBLISH_KEY");
+    char* subscribe_key = getenv("PN_SUBSCRIBE_KEY");
+    char* channel = getenv("PN_CHANNEL");
 
-    char* SERIAL_DEV = argv[1];
+    char* serial_dev = argv[1];
 
     enum pubnub_res pbresult;
     pubnub_t *ctx = pubnub_alloc();
@@ -24,31 +24,36 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    pubnub_init(ctx, PN_PUBLISH_KEY, PN_SUBSCRIBE_KEY);
+    pubnub_init(ctx, publish_key, subscribe_key);
 
-    FILE* serial = fopen(SERIAL_DEV, "r");
+    FILE* serial = fopen(serial_dev, "r");
     if (NULL == serial) {
         perror("serial port open error");
     } else {
-        char inStr[64];
-        char outStr[64];
+        char in_str[64];
+        char out_str[64];
 
         while(!feof(serial)) {
-            if (NULL == fgets(inStr, 64, serial)) {
+            if (NULL == fgets(in_str, 64, serial)) {
                 perror("serial port read error");
             } else {
-                char* port = strtok(inStr, ":");
-                char* value = strtok(NULL, "\r\n");
+                int port = atoi(strtok(in_str, ":"));
+                int value = atoi(strtok(NULL, "\r\n"));
 
-                if (NULL != port && NULL != value) {
-                    sprintf(outStr, "{ \"%s\": %s }", port, value);
-
-                    pubnub_publish(ctx, CHANNEL, outStr);
-                    pbresult = pubnub_await(ctx);
-                    if (pbresult != PNR_OK) {
-                        fprintf(stderr, "pubnub publish error [%d]\n", pbresult);
-                    }
+                if (port == 5) {
+                    value = ((value * (5.0 / 1024.0)) - 0.5) * 100;
                 }
+
+                sprintf(out_str, "{ \"%d\": %d }", port, value);
+                fprintf(stderr, "%s", out_str);
+
+                pubnub_publish(ctx, channel, out_str);
+                pbresult = pubnub_await(ctx);
+                if (pbresult != PNR_OK) {
+                    fprintf(stderr, "pubnub publish error [%d]\n", pbresult);
+                }
+
+                fprintf(stderr, "\t--> result: %d\n", pbresult);
             }
         }
 

@@ -3,7 +3,7 @@
   "main": "index.js",
   "version": "0.0.0",
   "authors": [
-    "pim <pvdheijden@yahoo.com>"
+    "pim <pim@zifzaf.com"
   ],
   "description": "See the sun rise and set!",
   "license": "MIT",
@@ -15,9 +15,19 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "*",
-    "bootstrap": "*",
-    "phaser": "*",
+    "phaser": "./node_modules/phaser",
     "pubnub": "*"
+  },
+  "exportsOverride": {
+    "phaser": {
+      ".": [
+        "dist/phaser.js",
+        "dist/pixi.js"
+      ]
+    },
+    "pubnub": {
+      ".": "web/pubnub.js"
+    }
   }
+
 }

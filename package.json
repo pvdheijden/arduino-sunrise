@@ -4,38 +4,44 @@
   "description": "See the sun rise and set!",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test",
-    "setup": "grunt setup",
-    "start": "grunt www"
+    "test": "istanbul cover _mocha -- --ui tdd --reporter spec test",
+    "install": "grunt build",
+    "start": "node bin/www"
   },
-  "author": "pim <pvdheijden@yahoo.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pvdheijden/arduino-sunrise.git"
+  },
+  "author": "pim <pim@zifzaf.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pvdheijden/arduino-sunrise/issues"
+  },
+  "homepage": "https://github.com/pvdheijden/arduino-sunrise#readme",
   "devDependencies": {
-    "grunt-contrib-jshint": "*",
-    "grunt-coveralls": "*",
-    "grunt-mocha-istanbul": "*",
     "istanbul": "*",
     "jshint": "*",
-    "jshint-stylish": "*",
     "mocha": "*"
   },
   "dependencies": {
     "body-parser": "*",
     "chai": "*",
+    "cors": "*",
     "debug": "*",
     "ejs": "*",
+    "envify": "*",
     "express": "*",
     "express-session": "*",
     "express-validator": "*",
-    "serve-favicon": "*",
     "grunt": "*",
     "grunt-bower-task": "*",
-    "grunt-contrib-copy": "*",
+    "grunt-browserify": "*",
+    "grunt-contrib-uglify": "*",
     "grunt-env": "*",
-    "grunt-execute": "*",
-    "grunt-react": "*",
     "morgan": "*",
+    "phaser": "*",
+    "pubnub": "*",
     "serialport": "*",
-    "pubnub": "*"
+    "serve-favicon": "*"
   }
 }

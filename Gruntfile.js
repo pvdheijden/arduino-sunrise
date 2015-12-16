@@ -4,95 +4,67 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        'bower': {
-            'install': {
-                'options': {
-                    'targetDir': './www/lib',
-                    'layout': 'byComponent'
+        env: {
+            dev: {
+                src: 'env.ini'
+            },
+            production: {
+                src: 'env.ini'
+            }
+        },
+
+        bower: {
+            install: {
+                options: {
+                    targetDir: './www/lib',
+                    layout: 'byComponent'
                 }
             }
         },
 
-        'copy': {
-            'install': {
-                'options': {
-                },
-                'files': [
-                    {
-                        'dest': './www/lib/bootstrap/bootstrap.css.map', 'src': './bower_components/bootstrap/dist/css/bootstrap.css.map'
+        browserify: {
+            dev: {
+                options: {
+                    browserifyOptions: {
+                        debug: true
                     },
-                    {
-                        'flatten': true, 'expand': true,
-                        'dest': './www/lib/bootstrap/', 'src': ['./bower_components/bootstrap/dist/css/bootstrap-theme.css*']
-                    }
-                ]
-            }
-        },
-
-        'react': {
-            'www': {
-                'files': {
+                    transform: [
+                        ['envify']
+                    ]
+                },
+                files: {
+                    'www/build/index-bundle.dev.js': [ 'www/src/index.js']
+                }
+            },
+            production: {
+                options: {
+                    transform: [
+                        ['envify']
+                    ]
+                },
+                files: {
+                    'www/build/index-bundle.js': [ 'www/src/index.js']
                 }
             }
         },
 
-        'env': {
-            'dev': {
-                'src': 'env.ini'
-            }
-        },
-
-        'jshint': {
-            'lint': {
-                'options': {
-                    'jshintrc': '.jshintrc',
-                    'reporter': require('jshint-stylish')
+        uglify: {
+            production: {
+                options: {
+                    sourceMap: false
                 },
-                'src': [
-                    '*.js',
-                    'routes/**/*.js',
-                    'bin/www',
-                    'lib/**/*.js',
-                    'test/**/*.js',
-                    'www/*.js'
-                ]
-            }
-        },
-
-        'mocha_istanbul': {
-            'coverage': {
-                'src': 'test',
-                'options': {
-                    'print': 'detail',
-                    'reporter': 'spec'
+                files: {
+                    'www/build/index-bundle.min.js': ['www/build/index-bundle.js']
                 }
-            }
-        },
-
-        'execute': {
-            'www': {
-                'options': {
-                    'args': []
-                },
-                'src': ['./bin/www']
             }
         }
-
     });
 
-    grunt.loadNpmTasks('grunt-bower-task');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-
-    grunt.loadNpmTasks('grunt-react');
-
     grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-mocha-istanbul');
-    grunt.registerTask('test', ['env:dev', 'copy', /*'react',*/ 'jshint', 'mocha_istanbul']);
-
-    grunt.registerTask('setup', ['env:dev', 'bower:install', 'copy:install'/*, 'react'*/]);
-
-    grunt.loadNpmTasks('grunt-execute');
-    grunt.registerTask('www', ['env:dev', /*'react',*/ 'execute:www']);
+    grunt.registerTask('build-dev', ['env:dev', 'bower:install', 'browserify:dev']);
+    grunt.registerTask('build', ['env:production', 'bower:install', 'copy:phaser', 'browserify:production', 'uglify:production']);
 };
