@@ -5,10 +5,6 @@
 
 #include "pubnub_sync.h"
 
-//#define PN_PUBLISH_KEY "pub-c-85aee41c-476a-4324-b21d-b6f983e698bb"
-//#define PN_SUBSCRIBE_KEY "sub-c-4fc31204-c4aa-11e3-9f73-02ee2ddab7fe"
-//#define CHANNEL "bleekerstraatje-3"
-
 int main(int argc, char* argv[]) {
 
     char* publish_key = getenv("PN_PUBLISH_KEY");
@@ -37,25 +33,26 @@ int main(int argc, char* argv[]) {
             if (NULL == fgets(in_str, 64, serial)) {
                 perror("serial port read error");
             } else {
-                int port = atoi(strtok(in_str, ":"));
-                int value = atoi(strtok(NULL, "\r\n"));
+                fprintf(stderr, "IN: %s\n", in_str);
 
-                if (port == 5) {
-                    value = ((value * (5.0 / 1024.0)) - 0.5) * 100;
+                char* port = strtok(in_str, ":");
+                char* value = strtok(NULL, "\r\n");
+
+                if (port != NULL && value != NULL) {
+                    sprintf(out_str, "{ \"%s\": %s }", port, value);
+
+                    fprintf(stderr, "OUT: %s: %s", channel, out_str);
+                    pubnub_publish(ctx, channel, out_str);
+                    pbresult = pubnub_await(ctx);
+                    if (pbresult != PNR_OK) {
+                        fprintf(stderr, "pubnub publish error [%d]\n", pbresult);
+                    }
+
+                    fprintf(stderr, "\t--> result: %d\n", pbresult);
                 }
-
-                sprintf(out_str, "{ \"%d\": %d }", port, value);
-                fprintf(stderr, "%s", out_str);
-
-                pubnub_publish(ctx, channel, out_str);
-                pbresult = pubnub_await(ctx);
-                if (pbresult != PNR_OK) {
-                    fprintf(stderr, "pubnub publish error [%d]\n", pbresult);
-                }
-
-                fprintf(stderr, "\t--> result: %d\n", pbresult);
             }
         }
+        perror("serial port connection");
 
         fclose(serial);
     }

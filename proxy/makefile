@@ -7,7 +7,7 @@ else
 SOURCEFILES += ./pubnub/posix/monotonic_clock_get_time_posix.c
 endif
 
-CFLAGS =-g -std=gnu99 -D VERBOSE_WARN -I ./pubnub/core -I . -I ./pubnub/posix/fntest -I ./pubnub/core/fntest -I ./pubnub/openssl -Wall
+CFLAGS =-g -std=gnu99 -D NO_VERBOSE_DEBUG -I ./pubnub/core -I . -I ./pubnub/posix/fntest -I ./pubnub/core/fntest -I ./pubnub/openssl -Wall
 # -g enables debugging, remove to get a smaller executable
 
 all: proxy
