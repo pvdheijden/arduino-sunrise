@@ -28,20 +28,21 @@ void measurement(int sensor, float threshold)
       break;
   }
 
-  if (abs(val[sensor] - newVal) >= threshold) {
+//  if (abs(val[sensor] - newVal) >= threshold) {
     val[sensor] = newVal;
 
     Serial.print(sensor);
     Serial.print(":");
-    Serial.println(val[sensor]);
+    Serial.println(val[sensor], 1);
     Serial.flush();
-  }
+
+//  }
 }
 
 // the setup routine runs once when you press reset:
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(19200, SERIAL_8N1);
 
   // initialize the digital pin as an output.
   pinMode(led, OUTPUT);
@@ -50,12 +51,14 @@ void setup()
 // the loop routine runs over and over again forever:
 void loop()
 {
+  delay(10000);
   measurement(LIGHT_SENSOR, LIGHT_SENSOR_THRESHOLD);
-  measurement(TEMP_SENSOR, TEMP_SENSOR_THRESHOLD);
-
   ledState = !ledState;
   digitalWrite(led, ledState);
-
-  delay(1000);
+  
+  delay(10000);
+  measurement(TEMP_SENSOR, TEMP_SENSOR_THRESHOLD);
+  ledState = !ledState;
+  digitalWrite(led, ledState);
 }
 

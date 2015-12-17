@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
 
 #include "pubnub_sync.h"
 
@@ -9,11 +12,11 @@ int main(int argc, char* argv[]) {
 
     char* publish_key = getenv("PN_PUBLISH_KEY");
     char* subscribe_key = getenv("PN_SUBSCRIBE_KEY");
-    char* channel = getenv("PN_CHANNEL");
+//    char* channel = getenv("PN_CHANNEL");
 
     char* serial_dev = argv[1];
 
-    enum pubnub_res pbresult;
+//    enum pubnub_res pbresult;
     pubnub_t *ctx = pubnub_alloc();
     if (NULL == ctx) {
         fprintf(stderr, "pubnub context allocation error\n");
@@ -22,10 +25,42 @@ int main(int argc, char* argv[]) {
 
     pubnub_init(ctx, publish_key, subscribe_key);
 
-    FILE* serial = fopen(serial_dev, "r");
-    if (NULL == serial) {
+    int serial = open(serial_dev, O_RDONLY);
+    if (serial == -1) {
         perror("serial port open error");
     } else {
+
+        struct termios term, term_save;
+
+        tcgetattr(serial, &term_save);
+        term = term_save;
+
+        /*
+        115200 Baud, 8N1
+        */
+        cfsetospeed(&term,B115200);
+        cfsetispeed(&term,B115200);
+        term.c_cflag &= ~CSIZE; term.c_cflag |= CS8;
+        term.c_cflag &= ~PARENB;
+        term.c_cflag &= ~CSTOPB;
+
+        term.c_cflag |= CLOCAL;
+        term.c_cflag |= CREAD;
+
+        term.c_iflag |= IXON;
+        term.c_iflag |= IXOFF;
+        term.c_iflag |= ICRNL;
+
+        term.c_lflag &= ~ ECHO;
+        term.c_cc[VMIN] = 4;
+        term.c_cc[VTIME] = 0;
+
+        if (tcsetattr(serial, TCSANOW, &term) < 0) {
+            perror("serial set attribute error");
+        };
+
+        sleep(2);
+
         char in_str[64];
         char out_str[64];
 
@@ -52,11 +87,10 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
-        perror("serial port connection");
 
-        fclose(serial);
+        tcsetattr(serial, TCSANOW, &term_save);
+        close(serial);
     }
-
 
     pubnub_free(ctx);
 
