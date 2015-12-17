@@ -12,11 +12,11 @@ int main(int argc, char* argv[]) {
 
     char* publish_key = getenv("PN_PUBLISH_KEY");
     char* subscribe_key = getenv("PN_SUBSCRIBE_KEY");
-//    char* channel = getenv("PN_CHANNEL");
+    char* channel = getenv("PN_CHANNEL");
 
     char* serial_dev = argv[1];
 
-//    enum pubnub_res pbresult;
+    enum pubnub_res pbresult;
     pubnub_t *ctx = pubnub_alloc();
     if (NULL == ctx) {
         fprintf(stderr, "pubnub context allocation error\n");
@@ -64,8 +64,8 @@ int main(int argc, char* argv[]) {
         char in_str[64];
         char out_str[64];
 
-        while(!feof(serial)) {
-            if (NULL == fgets(in_str, 64, serial)) {
+        while(true) {
+            if (read(serial, in_str, 64) < 0) {
                 perror("serial port read error");
             } else {
                 fprintf(stderr, "IN: %s\n", in_str);
