@@ -1,5 +1,6 @@
 import os
 import sys
+import signal
 
 import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -30,7 +31,7 @@ class PubnubProxy:
             pass
 
         def _error(err):
-            raise PubnubError(err)
+            raise Exception('pubnub publish error: ' + err.message);
 
         self.pubnub.publish(self.channel, sensorVal, _callback, _error);
 
@@ -44,7 +45,15 @@ class PubnubProxy:
 
 
 if __name__ == '__main__':
+    def sigterm_handler(_signo, _stack_frame):
+        "When sysvinit sends the TERM signal, cleanup before exiting."
+        print("[" + get_now() + "] received signal {}, exiting...".format(_signo))
+        sys.exit(0)
+
+    signal.signal(signal.SIGTERM, sigterm_handler)
+
     dev = sys.argv[1];
     channel = sys.argv[2];
 
     PubnubProxy(dev, channel).run();
+
