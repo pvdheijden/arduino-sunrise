@@ -15,15 +15,12 @@
     "tests"
   ],
   "dependencies": {
-    "phaser": "./node_modules/phaser",
+    "phaser": "*",
     "pubnub": "*"
   },
   "exportsOverride": {
     "phaser": {
-      ".": [
-        "dist/phaser.js",
-        "dist/pixi.js"
-      ]
+      ".": "build/phaser.min.js"
     },
     "pubnub": {
       ".": "web/pubnub.js"

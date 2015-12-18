@@ -39,9 +39,6 @@
     "grunt-contrib-uglify": "*",
     "grunt-env": "*",
     "morgan": "*",
-    "phaser": "*",
-    "pubnub": "*",
-    "serialport": "*",
     "serve-favicon": "*"
   }
 }

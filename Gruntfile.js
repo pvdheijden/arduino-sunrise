@@ -66,5 +66,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('build-dev', ['env:dev', 'bower:install', 'browserify:dev']);
-    grunt.registerTask('build', ['env:production', 'bower:install', 'copy:phaser', 'browserify:production', 'uglify:production']);
+    grunt.registerTask('build', ['env:production', 'bower:install', 'browserify:production', 'uglify:production']);
 };

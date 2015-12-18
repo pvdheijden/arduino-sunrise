@@ -1,7 +1,7 @@
 'use strict';
 
-global.PIXI = require('../lib/phaser/pixi.js');
-global.Phaser = require('../lib/phaser/phaser.js');
+//global.PIXI = require('../lib/phaser/pixi.js');
+//global.Phaser = require('../lib/phaser/phaser.js');
 
 var PUBNUB = require('../lib/pubnub/pubnub.js');
 

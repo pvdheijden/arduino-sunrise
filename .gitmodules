@@ -1,3 +1,0 @@
-[submodule "proxy/pubnub"]
-	path = proxy/pubnub
-	url = https://github.com/pubnub/c-core.git
