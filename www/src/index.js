@@ -11,7 +11,8 @@ var tempVal = 0;
 
 var pubnub = PUBNUB.init({
     publish_key   : process.env.PN_PUBLISH_KEY,
-    subscribe_key : process.env.PN_SUBSCRIBE_KEY
+    subscribe_key : process.env.PN_SUBSCRIBE_KEY,
+    ssl: true
 });
 
 pubnub.subscribe({
