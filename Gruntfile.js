@@ -9,7 +9,6 @@ module.exports = function(grunt) {
                 src: 'env.ini'
             },
             production: {
-                src: 'env.ini'
             }
         },
 
