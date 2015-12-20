@@ -2,11 +2,11 @@
   "name": "arduino-sunrise",
   "version": "0.0.2",
   "description": "See the sun rise and set!",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "istanbul cover _mocha -- --ui tdd --reporter spec test",
-    "install": "grunt build",
-    "start": "node bin/www"
+    "postinstall": "grunt build",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,24 +21,19 @@
   "devDependencies": {
     "istanbul": "*",
     "jshint": "*",
-    "mocha": "*"
-  },
-  "dependencies": {
-    "body-parser": "*",
+    "mocha": "*",
     "chai": "*",
     "cors": "*",
     "debug": "*",
-    "ejs": "*",
     "envify": "*",
     "express": "*",
-    "express-session": "*",
-    "express-validator": "*",
     "grunt-cli": "*",
     "grunt": "*",
     "grunt-bower-task": "*",
     "grunt-browserify": "*",
     "grunt-contrib-uglify": "*",
     "grunt-env": "*",
+    "grunt-aws": "*",
     "morgan": "*",
     "serve-favicon": "*"
   }

@@ -1,13 +1,7 @@
 'use strict';
 
-//global.PIXI = require('../lib/phaser/pixi.js');
-//global.Phaser = require('../lib/phaser/phaser.js');
-
-var PUBNUB = require('../lib/pubnub/pubnub.js');
-
 var lightVal = 0;
 var tempVal = 0;
-
 
 var pubnub = PUBNUB.init({
     publish_key   : process.env.PN_PUBLISH_KEY,

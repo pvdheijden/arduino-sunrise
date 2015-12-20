@@ -1,4 +1,6 @@
-/env.ini
+/aws
+/aws/credentials.json
+/build-env.ini
 /www/lib
 /www/build
 /proxy/proxy
@@ -85,4 +87,4 @@ node_modules
 
 bower_components
 www/lib
-env.ini
+build-env.ini

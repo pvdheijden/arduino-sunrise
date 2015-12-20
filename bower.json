@@ -23,8 +23,7 @@
       ".": "build/phaser.min.js"
     },
     "pubnub": {
-      ".": "web/pubnub.js"
+      ".": "web/pubnub.min.js"
     }
   }
-
 }
