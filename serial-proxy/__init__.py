@@ -1,1 +1,1 @@
-__all__ = [PubnubProxy]
+__all__ = [Proxy]
